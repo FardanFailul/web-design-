@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layanan Kas Masjid Anak-Anak</title>
+  <style>
+    /* General Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #D3D3D3; /* Light gray background */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      background-color: #1DB954;
+      color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      width: 100%;
+    }
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.3em;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-bottom: 0;
+    }
+
+    /* Navigation Button Styling */
+    .btn {
+      display: inline-block;
+      background-color: #1DB954;
+      color: #fff;
+      padding: 15px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin: 10px;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .btn:hover {
+      background-color: #1ed760;
+      transform: translateY(-2px);
+    }
+
+    /* Page Content */
+    .container {
+      max-width: 800px;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      background-color: #FFF;
+      border-radius: 12px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+
+    /* Chatbot Styling */
+    .chatbot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      background-color: #FFF;
+      border: 2px solid #1DB954;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .chat-header {
+      background-color: #1DB954;
+      color: #fff;
+      padding: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+    .chat-body {
+      display: none;
+      padding: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .chat-message {
+      margin: 10px 0;
+    }
+    .chat-message.bot {
+      text-align: left;
+      color: #333;
+    }
+    .chat-message.user {
+      text-align: right;
+      color: #1DB954;
+    }
+    .question-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .question-list li {
+      cursor: pointer;
+      color: #1DB954;
+      margin: 5px 0;
+    }
+    .question-list li:hover {
+      text-decoration: underline;
+    }
+
+    /* Input Styling */
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #1DB954;
+      width: 70%;
+      margin-bottom: 10px;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+      border-color: #1ed760;
+      outline: none;
+    }
+
+    /* Additional Styling */
+    img {
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+    }
+    th {
+      background-color: #1DB954;
+      color: #fff;
+      padding: 10px;
+    }
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>Layanan Kas Masjid Anak-Anak</h1>
+    <p>Pengelolaan keuangan masjid yang transparan dan ceria.</p>
+  </header>
+
+  <!-- Navigation Buttons -->
+  <div class="container">
+    <a href="#" class="btn" onclick="showPage('home')">Beranda</a>
+    <a href="#" class="btn" onclick="showPage('donasi')">Donasi</a>
+    <a href="#" class="btn" onclick="showPage('laporan_kas')">Laporan Kas</a>
+    <a href="#" class="btn" onclick="showPage('penggunaan_dana')">Penggunaan Dana</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Beranda Page -->
+    <div id="home" class="page active">
+      <h2 style="margin-bottom: 20px;">Selamat Datang di Layanan Kas Masjid</h2>
+      <p style="margin-bottom: 20px;">Di sini Anda dapat melihat laporan kas, berdonasi, dan memantau penggunaan dana masjid.</p>
+
+      <!-- Activity Information Section -->
+      <h3>Info Kegiatan di Masjid</h3>
+      <p>Berikut adalah beberapa kegiatan rutin di masjid kami yang dapat Anda ikuti:</p>
+      <ul style="list-style: none; padding: 0; margin: 20px 0;">
+        <li>Pengajian Anak-Anak - Setiap Sabtu Pukul 10.00</li>
+        <li>Majelis Dzikir - Setiap Jumat Pukul 18.00</li>
+        <li>Belajar Al-Qur'an - Setiap Hari Minggu Pukul 09.00</li>
+        <li>Kegiatan Bakti Sosial - Bulanan</li>
+      </ul>
+      
+      <!-- Image for Activities -->
+      <img src="https://example.com/masjid_activity.jpg" alt="Kegiatan di Masjid">
+      
+      <!-- Prayer Times Section -->
+      <h3>Jadwal Sholat Lima Waktu</h3>
+      <table>
+        <tr>
+          <th>Waktu</th>
+          <th>Sholat</th>
+          <th>Imam</th>
+        </tr>
+        <tr>
+          <td>04:30</td>
+          <td>Subuh</td>
+          <td>Ust. Ahmad</td>
+        </tr>
+        <tr>
+          <td>12:00</td>
+          <td>Dzuhur</td>
+          <td>Ust. Budi</td>
+        </tr>
+        <tr>
+          <td>15:30</td>
+          <td>Ashar</td>
+          <td>Ust. Hadi</td>
+        </tr>
+        <tr>
+          <td>18:00</td>
+          <td>Maghrib</td>
+          <td>Ust. Rizal</td>
+        </tr>
+        <tr>
+          <td>19:30</td>
+          <td>Isya</td>
+          <td>Ust. Yasin</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Donasi Page -->
+    <div id="donasi" class="page">
+      <h2>Donasi</h2>
+      <p>Terima kasih atas donasi Anda untuk masjid kami.</p>
+      <div style="background-color: #E7F7E8; padding: 20px; border-radius: 12px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+        <input type="text" id="donorName" placeholder="Nama Donatur" required>
+        <input type="number" id="donasiAmount" placeholder="Jumlah Donasi (Rp)" required>
+        <button class="btn" onclick="tambahDonasi()">Tambah Donasi</button>
+      </div>
+      <h3>Daftar Donatur</h3>
+      <ul id="donaturList"></ul>
+    </div>
+
+    <!-- Laporan Kas Page -->
+    <div id="laporan_kas" class="page">
+      <h2>Laporan Kas</h2>
+      <p>Berikut adalah laporan kas masjid:</p>
+      <table>
+        <tr>
+          <th>Tanggal</th>
+          <th>Deskripsi</th>
+          <th>Pemasukan</th>
+          <th>Pengeluaran</th>
+        </tr>
+        <tr>
+          <td>01 Nov 2024</td>
+          <td>Donasi Bulanan</td>
+          <td>Rp 1.500.000</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>03 Nov 2024</td>
+          <td>Belanja Bahan Makanan</td>
+          <td>-</td>
+          <td>Rp 300.000</td>
+        </tr>
+        <tr>
+          <td>05 Nov 2024</td>
+          <td>Pembayaran Sewa Gedung</td>
+          <td>-</td>
+          <td>Rp 1.000.000</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Penggunaan Dana Page -->
+    <div id="penggunaan_dana" class="page">
+      <h2>Penggunaan Dana</h2>
+      <p>Berikut adalah rincian penggunaan dana masjid:</p>
+      <ul>
+        <li>Pembelian Al-Qur'an - Rp 500.000</li>
+        <li>Biaya Kegiatan Pengajian - Rp 300.000</li>
+        <li>Renovasi Tempat Ibadah - Rp 2.000.000</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Chatbot Section -->
+  <div class="chatbot-container">
+    <div class="chat-header" onclick="toggleChat()">FnR Bot</div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-message bot">Hai! Apa yang bisa saya bantu hari ini?</div>
+      <input type="text" id="userInput" placeholder="Tanyakan sesuatu..." onkeypress="checkEnter(event)">
+      <ul class="question-list">
+        <li onclick="addUserMessage('Bagaimana cara berdonasi?')">Bagaimana cara berdonasi?</li>
+        <li onclick="addUserMessage('Apa saja kegiatan di masjid?')">Apa saja kegiatan di masjid?</li>
+        <li onclick="addUserMessage('Berapa jadwal sholat?')">Berapa jadwal sholat?</li>
+        <li onclick="addUserMessage('Bagaimana laporan kas bulan ini?')">Bagaimana laporan kas bulan ini?</li>
+        <li onclick="addUserMessage('Apa saja pengeluaran masjid bulan lalu?')">Apa saja pengeluaran masjid bulan lalu?</li>
+        <li onclick="addUserMessage('Siapa yang bisa dihubungi untuk donasi?')">Siapa yang bisa dihubungi untuk donasi?</li>
+        <li onclick="addUserMessage('Apa tujuan penggunaan dana masjid?')">Apa tujuan penggunaan dana masjid?</li>
+        <li onclick="addUserMessage('Berapa total donasi yang diterima?')">Berapa total donasi yang diterima?</li>
+        <li onclick="addUserMessage('Apakah ada laporan tahunan?')">Apakah ada laporan tahunan?</li>
+        <li onclick="addUserMessage('Bagaimana cara ikut kegiatan masjid?')">Bagaimana cara ikut kegiatan masjid?</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      // Hide all pages
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+
+      // Show selected page
+      const activePage = document.getElementById(pageId);
+      activePage.classList.add('active');
+    }
+
+    function tambahDonasi() {
+      const name = document.getElementById('donorName').value;
+      const amount = document.getElementById('donasiAmount').value;
+      const list = document.getElementById('donaturList');
+
+      if (name && amount) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${name} - Rp ${amount}`;
+        list.appendChild(listItem);
+
+        // Clear input fields
+        document.getElementById('donorName').value = '';
+        document.getElementById('donasiAmount').value = '';
+      }
+    }
+
+    function toggleChat() {
+      const chatBody = document.getElementById('chatBody');
+      chatBody.style.display = chatBody.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addUserMessage(message) {
+      const chatBody = document.getElementById('chatBody');
+      const userMessage = document.createElement('div');
+      userMessage.className = 'chat-message user';
+      userMessage.textContent = message;
+
+      chatBody.appendChild(userMessage);
+      chatBody.scrollTop = chatBody.scrollHeight; // Scroll to the bottom
+
+      // Generate bot response
+      setTimeout(() => {
+        const botMessage = document.createElement('div');
+        botMessage.className = 'chat-message bot';
+        botMessage.textContent = getBotResponse(message);
+        chatBody.appendChild(botMessage);
+        chatBody.scrollTop = chatBody.scrollHeight; // Scroll to the bottom
+      }, 1000);
+    }
+
+    function checkEnter(event) {
+      if (event.key === 'Enter') {
+        const input = document.getElementById('userInput').value;
+        if (input) {
+          addUserMessage(input);
+          document.getElementById('userInput').value = ''; // Clear input
+        }
+      }
+    }
+
+    function getBotResponse(message) {
+      const greetings = [
+        { phrases: ["hello", "hai", "apa kabar", "selamat pagi", "selamat siang", "selamat sore"], response: "Saya baik-baik saja, terima kasih! Bagaimana dengan Anda?" },
+        { phrases: ["bagaimana cara berdonasi?"], response: "Anda bisa berdonasi dengan mengisi formulir donasi di halaman Donasi." },
+        { phrases: ["apa saja kegiatan di masjid?"], response: "Kegiatan kami antara lain pengajian anak-anak, majelis dzikir, dan belajar Al-Qur'an." },
+        { phrases: ["berapa jadwal sholat?"], response: "Silakan lihat tabel jadwal sholat di halaman beranda." },
+        { phrases: ["bagaimana laporan kas bulan ini?"], response: "Anda bisa melihat laporan kas di halaman Laporan Kas." },
+        { phrases: ["apa saja pengeluaran masjid bulan lalu?"], response: "Pengeluaran masjid bulan lalu termasuk belanja bahan makanan dan sewa gedung." },
+        { phrases: ["siapa yang bisa dihubungi untuk donasi?"], response: "Anda bisa menghubungi pengurus masjid untuk informasi lebih lanjut." },
+        { phrases: ["apa tujuan penggunaan dana masjid?"], response: "Dana masjid digunakan untuk kegiatan keagamaan dan pemeliharaan masjid." },
+        { phrases: ["berapa total donasi yang diterima?"], response: "Total donasi akan diumumkan setiap akhir bulan." },
+        { phrases: ["apakah ada laporan tahunan?"], response: "Ya, laporan tahunan tersedia di halaman laporan masjid." },
+        { phrases: ["bagaimana cara ikut kegiatan masjid?"], response: "Anda bisa mendaftar di halaman kegiatan masjid." }
+      ];
+
+      // Check if the message matches any greeting
+      for (const greeting of greetings) {
+        for (const phrase of greeting.phrases) {
+          if (message.toLowerCase().includes(phrase)) {
+            return greeting.response;
+          }
+        }
+      }
+      
+      return "Maaf, saya tidak mengerti pertanyaan Anda. Silakan coba lagi.";
+    }
+  </script>
+</body>
+</html>
